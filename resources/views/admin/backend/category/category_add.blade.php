@@ -18,7 +18,7 @@
         <div class="card">
             <div class="card-body p-4">
                 <h5 class="mb-4">Form Category</h5>
-                <form class="row g-3" id="myForm" action="" method="post">
+                <form class="row g-3" id="myForm" action="{{route('category.store')}}" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group col-md-12">
                         <label for="input1" class="form-label">Category Name</label>
@@ -30,7 +30,7 @@
                         <input type="file" class="form-control" id="image" name="image">
                     </div>
                     <div class="col-md-12">
-                        <img id="showImage" src="{{url('upload/no_image.png')}}" alt="Admin" class="rounded-circle p-1"
+                        <img id="showImage" src="{{url('upload/no_image.png')}}" alt="Admin" class="p-1"
                              width="200"/>
                     </div>
                     <div class="col-md-12">

@@ -36,11 +36,14 @@
                             <tr>
                                 <td>{{$category+1}}</td>
                                 <td>
-                                    <img src="{{asset($item->image)}}" alt="" style="width: 70px; height: 40px">
+                                    {{$item->category_name}}
                                 </td>
                                 <td>
-                                    <a href="" class="btn btn-info px-5">Edit</a>
-                                    <a href="" class="btn btn-danger px-5">Delete</a>
+                                    <img src="{{asset($item->image)}}" alt="" style="width: 100px; height: 60px">
+                                </td>
+                                <td>
+                                    <a href="" class="btn btn-primary px-3 "><i class="bx bx-edit"></i>Edit</a>
+                                    <a href="" class="btn btn-danger px-3"><i class="bx bx-eraser"></i>Delete</a>
                                 </td>
                             </tr>
                         @endforeach

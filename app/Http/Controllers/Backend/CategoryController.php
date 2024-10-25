@@ -7,6 +7,8 @@ use App\Models\Category;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
+use Intervention\Image\Facades\Image;
 
 class CategoryController extends Controller
 {
@@ -19,5 +21,40 @@ class CategoryController extends Controller
     public function add(): View
     {
         return view('admin.backend.category.category_add');
+    }
+
+    public function store(Request $request): RedirectResponse
+    {
+        try {
+            $request->validate([
+                "category_name" => ["required", "string", "max:100"],
+                "image" => ["required", "image", "mimes:jpg,png,jpeg"]
+            ]);
+
+            $image = $request->file('image');
+            $name_gen = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
+            $url = 'upload/category/' . $name_gen;
+            Image::make($image)->resize(370, 246)->save($url);
+
+            Category::query()->insert([
+                "category_name" => $request->input('category_name'),
+                "category_slug" => strtolower(str_replace(' ', '-', $request->input('category_name'))),
+                "image" => $url,
+            ]);
+
+            $notification = [
+                "message" => "Success add category",
+                "alert-type" => "success"
+            ];
+
+            return redirect()->route('category.all')->with($notification);
+        } catch (ValidationException $validationException) {
+            $notification = [
+                "message" => $validationException->errors(),
+                "alert-type" => "error"
+            ];
+            return redirect()->back()->with($notification);
+        }
+
     }
 }
