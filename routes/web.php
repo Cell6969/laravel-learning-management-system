@@ -68,6 +68,10 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
             ->name('category.add');
         Route::post('/admin/category/add', [\App\Http\Controllers\Backend\CategoryController::class, 'store'])
             ->name('category.store');
+        Route::get('/admin/category/{id}', [\App\Http\Controllers\Backend\CategoryController::class, 'edit'])
+            ->name('category.edit');
+        Route::post('/admin/category/{id}', [\App\Http\Controllers\Backend\CategoryController::class, 'update'])
+            ->name('category.update');
     });
 });
 

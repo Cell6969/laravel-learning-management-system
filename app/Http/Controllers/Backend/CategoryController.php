@@ -57,4 +57,52 @@ class CategoryController extends Controller
         }
 
     }
+
+    public function edit(int $id): View
+    {
+        $category = Category::query()->find($id);
+        return view('admin.backend.category.category_edit', compact('category'));
+    }
+
+    public function update(Request $request, int $id): RedirectResponse
+    {
+        try {
+            $request->validate([
+                "category_name" => ["required", "string", "max:100"],
+                "image" => ["nullable", "image", "mimes:jpg,png,jpeg"]
+            ]);
+
+            if ($request->hasFile('image')) {
+                $image = $request->file('image');
+                $name_gen = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
+                $url = 'upload/category/' . $name_gen;
+                Image::make($image)->resize(370, 246)->save($url);
+
+                Category::query()->find($id)->update([
+                    "category_name" => $request->input('category_name'),
+                    "category_slug" => strtolower(str_replace(' ', '-', $request->input('category_name'))),
+                    "image" => $url,
+                ]);
+
+            } else {
+                Category::query()->find($id)->update([
+                    "category_name" => $request->input('category_name'),
+                    "category_slug" => strtolower(str_replace(' ', '-', $request->input('category_name')))
+                ]);
+            }
+            $notification = [
+                "message" => "Success update category",
+                "alert-type" => "success"
+            ];
+
+            return redirect()->route('category.all')->with($notification);
+
+        } catch (ValidationException $validationException) {
+            $notification = [
+                "message" => $validationException->errors(),
+                "alert-type" => "error"
+            ];
+            return redirect()->back()->with($notification);
+        }
+    }
 }
