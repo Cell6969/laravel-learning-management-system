@@ -19,7 +19,7 @@
                 <div class="menu-title">Dashboard</div>
             </a>
         </li>
-        <li class="menu-label">UI Elements</li>
+        <li class="menu-label">Application</li>
         <li>
             <a href="javascript:;" class="has-arrow">
                 <div class="parent-icon"><i class='bx bx-category'></i>
