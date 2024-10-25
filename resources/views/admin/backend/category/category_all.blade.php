@@ -42,9 +42,11 @@
                                     <img src="{{asset($item->image)}}" alt="" style="width: 100px; height: 60px">
                                 </td>
                                 <td>
-                                    <a href="{{route('category.edit', $item->id)}}" class="btn btn-primary px-3 "><i
+                                    <a href="{{route('category.edit', ["id" => $item->id])}}"
+                                       class="btn btn-primary px-3 "><i
                                             class="bx bx-edit"></i>Edit</a>
-                                    <a href="" class="btn btn-danger px-3"><i class="bx bx-eraser"></i>Delete</a>
+                                    <a href="{{route('category.delete', ["id" => $item->id])}}"
+                                       class="btn btn-danger px-3" id="delete"><i class="bx bx-eraser"></i>Delete</a>
                                 </td>
                             </tr>
                         @endforeach

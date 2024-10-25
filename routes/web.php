@@ -72,6 +72,8 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
             ->name('category.edit');
         Route::post('/admin/category/{id}', [\App\Http\Controllers\Backend\CategoryController::class, 'update'])
             ->name('category.update');
+        Route::get('/admin/category/delete/{id}', [\App\Http\Controllers\Backend\CategoryController::class, 'delete'])
+            ->name('category.delete');
     });
 });
 

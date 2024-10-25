@@ -105,4 +105,20 @@ class CategoryController extends Controller
             return redirect()->back()->with($notification);
         }
     }
+
+    public function delete(int $id): RedirectResponse
+    {
+        $category = Category::query()->findOrFail($id);
+        $image = $category->image;
+        unlink($image);
+
+        $category->delete();
+
+        $notification = [
+            "message" => "Successfully delete category",
+            "alert-type" => "success"
+        ];
+
+        return redirect()->back()->with($notification);
+    }
 }
