@@ -46,6 +46,7 @@ require __DIR__ . '/auth.php';
  */
 Route::get('/admin/login', [\App\Http\Controllers\AdminController::class, 'AdminLogin'])
     ->name('admin.login');
+
 Route::middleware(['auth', 'roles:admin'])->group(function () {
     Route::get('/admin/dashboard', [\App\Http\Controllers\AdminController::class, 'AdminDashboard'])
         ->name('admin.dashboard');
@@ -98,6 +99,12 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
  */
 Route::get('/instructor/login', [\App\Http\Controllers\InstructorController::class, 'InstructorLogin'])
     ->name('instructor.login');
+
+Route::get('/become-instructor', [\App\Http\Controllers\InstructorController::class, 'InstructorRegister'])
+    ->name('instructor.register');
+Route::post('/become-instructor', [\App\Http\Controllers\InstructorController::class, 'InstructorStore'])
+    ->name('instructor.register.store');
+
 Route::middleware(['auth', 'roles:instructor'])->group(function () {
     Route::get('/instructor/dashboard', [\App\Http\Controllers\InstructorController::class, 'InstructorDashboard'])
         ->name('instructor.dashboard');

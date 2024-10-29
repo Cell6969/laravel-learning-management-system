@@ -28,6 +28,41 @@ class InstructorController extends Controller
         return redirect('/instructor/login');
     }
 
+    public function InstructorRegister(): View
+    {
+        return view('frontend.instructor.register');
+    }
+
+    public function InstructorStore(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'username' => ['required', 'string', 'max:100'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'address' => ['nullable', 'string', 'max:255'],
+            'phone' => ['nullable', 'string', 'max:255'],
+            'password' => ['required', 'string', 'min:6'],
+        ]);
+
+        User::query()->insert([
+            "name" => $request->input("name"),
+            "username" => $request->input("username"),
+            "email" => $request->input("email"),
+            "address" => $request->input("address"),
+            "phone" => $request->input("phone"),
+            "password" => Hash::make($request->input("password")),
+            "role" => "instructor",
+            "status" => "0"
+        ]);
+
+        $notification = [
+            "message" => "Instructor Registered Successfully",
+            "alert-type" => "success"
+        ];
+
+        return redirect()->route('instructor.login')->with($notification);
+    }
+
     public function InstructorLogin(): View
     {
         return view('instructor.instructor_login');
