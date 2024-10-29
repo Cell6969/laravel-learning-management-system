@@ -27,9 +27,9 @@
                 <div class="menu-title">Manage Category</div>
             </a>
             <ul>
-                <li><a href="{{route('category.all')}}"><i class='bx bx-radio-circle'></i>All Category</a>
+                <li><a href="{{route('category.all')}}"><i class='bx bx-radio-circle'></i>Category</a>
                 </li>
-                <li><a href="ecommerce-products-details.html"><i class='bx bx-radio-circle'></i>Add Category</a>
+                <li><a href="{{route('subcategory.all')}}"><i class='bx bx-radio-circle'></i>Sub Category</a>
                 </li>
             </ul>
         </li>

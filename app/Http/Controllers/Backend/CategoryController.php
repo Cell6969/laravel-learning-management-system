@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\SubCategory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -120,5 +121,84 @@ class CategoryController extends Controller
         ];
 
         return redirect()->back()->with($notification);
+    }
+
+    public function all_subcategory(): View
+    {
+        $subcategories = SubCategory::query()->with('category')->latest()->get();
+        return view('admin.backend.subcategory.subcategory_all', compact('subcategories'));
+    }
+
+    public function add_subcategory(): View
+    {
+        $categories = Category::query()->latest()->get();
+        return view('admin.backend.subcategory.subcategory_add', compact('categories'));
+    }
+
+    public function store_subcategory(Request $request): RedirectResponse
+    {
+        $request->validate([
+            "subcategory_name" => ["required", "string", "max:100"],
+        ]);
+
+        SubCategory::query()->create([
+            "category_id" => $request->input('category_id'),
+            "subcategory_name" => $request->input('subcategory_name'),
+            "subcategory_slug" => strtolower(str_replace(' ', '-', $request->input('subcategory_name'))),
+        ]);
+
+        $notification = [
+            "message" => "Success add subcategory",
+            "alert-type" => "success"
+        ];
+
+        return redirect()->route('subcategory.all')->with($notification);
+    }
+
+    public function edit_subcategory(int $id): View
+    {
+        $subcategory = SubCategory::query()->find($id);
+        $categories = Category::query()->latest()->get();
+        return view('admin.backend.subcategory.subcategory_edit', compact('categories', 'subcategory'));
+    }
+
+    public function update_subcategory(Request $request, int $id): RedirectResponse
+    {
+        try {
+            $request->validate([
+                "subcategory_name" => ["required", "string", "max:100"],
+            ]);
+
+            SubCategory::query()->find($id)->update([
+                "category_id" => $request->input('category_id'),
+                "subcategory_name" => $request->input('subcategory_name'),
+                "subcategory_slug" => strtolower(str_replace(' ', '-', $request->input('subcategory_name'))),
+            ]);
+
+            $notification = [
+                "message" => "Success update subcategory",
+                "alert-type" => "success"
+            ];
+
+            return redirect()->route('subcategory.all')->with($notification);
+        } catch (ValidationException $validationException) {
+            $notification = [
+                "message" => $validationException->errors(),
+                "alert-type" => "error"
+            ];
+            return redirect()->back()->with($notification);
+        }
+    }
+
+    public function delete_subcategory(int $id): RedirectResponse
+    {
+        SubCategory::query()->find($id)->delete();
+
+        $notification = [
+            "message" => "Successfully delete subcategory",
+            "alert-type" => "success"
+        ];
+
+        return redirect()->route('subcategory.all')->with($notification);
     }
 }

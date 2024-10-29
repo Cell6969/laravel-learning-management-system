@@ -62,6 +62,7 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
 
     // Category
     Route::controller(\App\Http\Controllers\Backend\CategoryController::class)->group(function () {
+        // Category
         Route::get('/admin/category', [\App\Http\Controllers\Backend\CategoryController::class,'all'])
             ->name('category.all');
         Route::get('/admin/category/add', [\App\Http\Controllers\Backend\CategoryController::class, 'add'])
@@ -74,6 +75,20 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
             ->name('category.update');
         Route::get('/admin/category/delete/{id}', [\App\Http\Controllers\Backend\CategoryController::class, 'delete'])
             ->name('category.delete');
+
+        // Sub Category
+        Route::get('/admin/subcategory', [\App\Http\Controllers\Backend\CategoryController::class, 'all_subcategory'])
+            ->name('subcategory.all');
+        Route::get('/admin/subcategory/add', [\App\Http\Controllers\Backend\CategoryController::class, 'add_subcategory'])
+            ->name('subcategory.add');
+        Route::post('/admin/subcategory/add', [\App\Http\Controllers\Backend\CategoryController::class, 'store_subcategory'])
+            ->name('subcategory.store');
+        Route::get('/admin/subcategory/{id}', [\App\Http\Controllers\Backend\CategoryController::class, 'edit_subcategory'])
+            ->name('subcategory.edit');
+        Route::post('/admin/subcategory/{id}', [\App\Http\Controllers\Backend\CategoryController::class, 'update_subcategory'])
+            ->name('subcategory.update');
+        Route::get('/admin/subcategory/delete/{id}', [\App\Http\Controllers\Backend\CategoryController::class, 'delete_subcategory'])
+            ->name('subcategory.delete');
     });
 });
 

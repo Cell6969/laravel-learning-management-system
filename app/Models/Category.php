@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * 
@@ -23,6 +24,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Category whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Category whereImage($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Category whereUpdatedAt($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\SubCategory> $subcategory
+ * @property-read int|null $subcategory_count
  * @mixin \Eloquent
  */
 class Category extends Model
@@ -39,4 +42,9 @@ class Category extends Model
     public $timestamps = true;
 
     public $incrementing = true;
+
+    public function subcategory(): HasMany
+    {
+        return $this->hasMany(SubCategory::class, 'category_id', 'id');
+    }
 }
