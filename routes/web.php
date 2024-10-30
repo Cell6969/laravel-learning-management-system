@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -64,7 +65,7 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
     // Category
     Route::controller(\App\Http\Controllers\Backend\CategoryController::class)->group(function () {
         // Category
-        Route::get('/admin/category', [\App\Http\Controllers\Backend\CategoryController::class,'all'])
+        Route::get('/admin/category', [\App\Http\Controllers\Backend\CategoryController::class, 'all'])
             ->name('category.all');
         Route::get('/admin/category/add', [\App\Http\Controllers\Backend\CategoryController::class, 'add'])
             ->name('category.add');
@@ -91,6 +92,15 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
         Route::get('/admin/subcategory/delete/{id}', [\App\Http\Controllers\Backend\CategoryController::class, 'delete_subcategory'])
             ->name('subcategory.delete');
     });
+
+    // Instructor
+    Route::controller(AdminController::class)->group(function () {
+        Route::get('/admin/instructor', [\App\Http\Controllers\AdminController::class, 'InstructorAll'])
+            ->name('instructor.list');
+        Route::post('/admin/instructor/status', [\App\Http\Controllers\AdminController::class, 'InstructorStatus'])
+            ->name('instructor.status');
+    });
+
 });
 
 

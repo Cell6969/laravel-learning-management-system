@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -101,5 +102,28 @@ class AdminController extends Controller
             "alert-type" => "success"
         ];
         return back()->with($notification);
+    }
+
+    public function InstructorAll(): View
+    {
+        $instructors = User::query()
+            ->where('role', '=', 'instructor')
+            ->latest()
+            ->get();
+        return view('admin.backend.instructor.instructor_all', compact('instructors'));
+    }
+
+    public function InstructorStatus(Request $request): JsonResponse
+    {
+        $instructor = User::query()->find($request->input('user_id'));
+        $isChecked = $request->input('is_checked', 0);
+        if ($instructor) {
+            $instructor->status = $isChecked;
+            $instructor->save();
+        }
+
+        return response()->json([
+            "message" => "Instructor status updated successfully",
+        ], 200);
     }
 }

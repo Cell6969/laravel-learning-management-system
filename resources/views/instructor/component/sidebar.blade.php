@@ -1,3 +1,6 @@
+@php
+    $status = \Illuminate\Support\Facades\Auth::user()->status;
+@endphp
 <!--sidebar wrapper -->
 <div class="sidebar-wrapper" data-simplebar="true">
     <div class="sidebar-header">
@@ -19,6 +22,8 @@
                 <div class="menu-title">Dashboard</div>
             </a>
         </li>
+        @if($status == "1")
+
         <li class="menu-label">UI Elements</li>
         <li>
             <a href="javascript:;" class="has-arrow">
@@ -76,6 +81,8 @@
                 </li>
             </ul>
         </li>
+        @else
+        @endif
         <li>
             <a href="https://themeforest.net/user/codervent" target="_blank">
                 <div class="parent-icon"><i class="bx bx-support"></i>
