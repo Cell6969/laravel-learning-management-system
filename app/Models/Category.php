@@ -26,6 +26,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Category whereUpdatedAt($value)
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\SubCategory> $subcategory
  * @property-read int|null $subcategory_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Course> $course
+ * @property-read int|null $course_count
  * @mixin \Eloquent
  */
 class Category extends Model
@@ -46,5 +48,10 @@ class Category extends Model
     public function subcategory(): HasMany
     {
         return $this->hasMany(SubCategory::class, 'category_id', 'id');
+    }
+
+    public function course(): HasMany
+    {
+        return $this->hasMany(Course::class, 'category_id', 'id');
     }
 }

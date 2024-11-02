@@ -44,7 +44,7 @@ class InstructorController extends Controller
             'password' => ['required', 'string', 'min:6'],
         ]);
 
-        User::query()->insert([
+        User::query()->create([
             "name" => $request->input("name"),
             "username" => $request->input("username"),
             "email" => $request->input("email"),

@@ -128,5 +128,16 @@ Route::middleware(['auth', 'roles:instructor'])->group(function () {
         ->name('instructor.change_password');
     Route::post('/instructor/change_password', [\App\Http\Controllers\InstructorController::class, 'InstructorChangePasswordStore'])
         ->name('instructor.change_password.store');
+
+    Route::controller(\App\Http\Controllers\Backend\CourseController::class)->group(function () {
+        Route::get('/instructor/course', [\App\Http\Controllers\Backend\CourseController::class, 'InstructorCourse'])
+            ->name('instructor.course');
+        Route::get('/instructor/course/add', [\App\Http\Controllers\Backend\CourseController::class, 'InstructorCourseAdd'])
+            ->name('instructor.course.add');
+        Route::post('/instructor/course/add', [\App\Http\Controllers\Backend\CourseController::class,'InstructorCourseStore'])
+            ->name('instructor.course.store');
+
+        Route::get('/category/{category_id}/subcategory', [\App\Http\Controllers\Backend\CourseController::class, 'GetSubcategory']);
+    });
 });
 

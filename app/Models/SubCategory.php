@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * 
@@ -25,6 +26,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|SubCategory whereSubcategoryName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SubCategory whereSubcategorySlug($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SubCategory whereUpdatedAt($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Course> $course
+ * @property-read int|null $course_count
  * @mixin \Eloquent
  */
 class SubCategory extends Model
@@ -44,5 +47,10 @@ class SubCategory extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class, 'category_id', 'id');
+    }
+
+    public function course(): HasMany
+    {
+        return $this->hasMany(Course::class, 'subcategory_id', 'id');
     }
 }
