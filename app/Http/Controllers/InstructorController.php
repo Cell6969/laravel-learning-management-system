@@ -112,7 +112,7 @@ class InstructorController extends Controller
 
     public function InstructorChangePasswordStore(Request $request): RedirectResponse
     {
-// Validation
+        // Validation
         $request->validate([
             'old_password' => ['required', 'string', 'min:6'],
             'new_password' => ['required', 'string', 'min:6', 'confirmed'],

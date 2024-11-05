@@ -45,7 +45,7 @@
                                     {{$item->course_name}}
                                 </td>
                                 <td>
-                                    {{$item->category_id}}
+                                    {{$item->category->category_name}}
                                 </td>
                                 <td>
                                     {{$item->selling_price}}
@@ -54,11 +54,11 @@
                                     {{$item->discount_price}}
                                 </td>
                                 <td>
-                                    <a href="{{route('category.edit', ["id" => $item->id])}}"
-                                       class="btn btn-primary px-3 "><i
+                                    <a href="{{route('instructor.course.edit', ["id" => $item->id])}}"
+                                       class="btn btn-primary px-3 btn-sm"><i
                                             class="bx bx-edit"></i>Edit</a>
-                                    <a href="{{route('category.delete', ["id" => $item->id])}}"
-                                       class="btn btn-danger px-3" id="delete"><i class="bx bx-eraser"></i>Delete</a>
+                                    <a href="{{route('instructor.course.delete', ["id" => $item->id])}}"
+                                       class="btn btn-danger px-3 btn-sm" id="delete"><i class="bx bx-eraser"></i>Delete</a>
                                 </td>
                             </tr>
                         @endforeach
