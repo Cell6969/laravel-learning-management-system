@@ -129,12 +129,13 @@ Route::middleware(['auth', 'roles:instructor'])->group(function () {
     Route::post('/instructor/change_password', [\App\Http\Controllers\InstructorController::class, 'InstructorChangePasswordStore'])
         ->name('instructor.change_password.store');
 
+    // add , update and delete course
     Route::controller(\App\Http\Controllers\Backend\CourseController::class)->group(function () {
         Route::get('/instructor/course', [\App\Http\Controllers\Backend\CourseController::class, 'InstructorCourse'])
             ->name('instructor.course');
         Route::get('/instructor/course/add', [\App\Http\Controllers\Backend\CourseController::class, 'InstructorCourseAdd'])
             ->name('instructor.course.add');
-        Route::post('/instructor/course/add', [\App\Http\Controllers\Backend\CourseController::class,'InstructorCourseStore'])
+        Route::post('/instructor/course/add', [\App\Http\Controllers\Backend\CourseController::class, 'InstructorCourseStore'])
             ->name('instructor.course.store');
         Route::get('/instructor/course/{id}', [\App\Http\Controllers\Backend\CourseController::class, 'InstructorCourseEdit'])
             ->name('instructor.course.edit');
@@ -144,12 +145,30 @@ Route::middleware(['auth', 'roles:instructor'])->group(function () {
             ->name('instructor.course.update.image');
         Route::post('/instructor/course/{id}/video', [\App\Http\Controllers\Backend\CourseController::class, 'InstructorCourseUpdateVideo'])
             ->name('instructor.course.update.video');
-        Route::post('/instructor/course/{id}/goals', [\App\Http\Controllers\Backend\CourseController::class,'InstructorCourseUpdateGoals'])
+        Route::post('/instructor/course/{id}/goals', [\App\Http\Controllers\Backend\CourseController::class, 'InstructorCourseUpdateGoals'])
             ->name('instructor.course.update.goals');
         Route::get('/instructor/course/delete/{id}', [\App\Http\Controllers\Backend\CourseController::class, 'InstructorCourseDelete'])
             ->name('instructor.course.delete');
 
         Route::get('/category/{category_id}/subcategory', [\App\Http\Controllers\Backend\CourseController::class, 'GetSubcategory']);
+    });
+
+    // Course Section and Lecture
+    Route::controller(\App\Http\Controllers\Backend\CourseController::class)->group(function () {
+        Route::get('/instructor/course/{id}/section', [\App\Http\Controllers\Backend\CourseController::class, 'InstructorCourseLectureAdd'])
+            ->name('instructor.course.section.add');
+        Route::post('/instructor/course/{id}/section', [\App\Http\Controllers\Backend\CourseController::class, 'InstructorCourseSectionStore'])
+            ->name('instructor.course.section.store');
+        Route::post('/instructor/course/{course_id}/section/{section_id}/delete', [\App\Http\Controllers\Backend\CourseController::class, 'InstructorCourseSectionDelete'])
+            ->name('instructor.course.section.delete');
+        Route::post('/instructor/course/{course_id}/section/{section_id}/lecture', [\App\Http\Controllers\Backend\CourseController::class, 'InstructorCourseLectureStore'])
+            ->name('instructor.course.lecture.store');
+        Route::get('/instructor/course/{course_id}/section/{section_id}/lecture/{lecture_id}', [\App\Http\Controllers\Backend\CourseController::class, 'InstructorCourseLectureEdit'])
+            ->name('instructor.course.lecture.edit');
+        Route::post('/instructor/course/{course_id}/section/{section_id}/lecture/{lecture_id}', [\App\Http\Controllers\Backend\CourseController::class, 'InstructorCourseLectureUpdate'])
+            ->name('instructor.course.lecture.update');
+        Route::get('//instructor/course/{course_id}/section/{section_id}/lecture/{lecture_id}/delete', [\App\Http\Controllers\Backend\CourseController::class, 'InstructorCourseLectureDelete'])
+            ->name('instructor.course.lecture.delete');
     });
 });
 

@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Course;
 use App\Models\CourseGoal;
+use App\Models\CourseLecture;
+use App\Models\CourseSection;
 use App\Models\SubCategory;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
@@ -239,5 +241,127 @@ class CourseController extends Controller
             ->orderBy('subcategory_name', 'asc')
             ->get();
         return json_encode($subcategories);
+    }
+
+    public function InstructorCourseLectureAdd(int $id): View
+    {
+        $course = Course::query()
+            ->with('course_section.course_lecture')
+            ->find($id);
+        return view('instructor.course.section.lecture_add', compact('course'));
+    }
+
+    public function InstructorCourseSectionStore(int $id, Request $request): RedirectResponse
+    {
+        $request->validate([
+            "section_title" => ["required", "string", "max:255"]
+        ]);
+
+        CourseSection::query()->create([
+            "course_id" => $id,
+            "section_title" => $request->input("section_title"),
+        ]);
+
+        $notification = [
+            "message" => "Success add Section",
+            "alert-type" => "success"
+        ];
+        return redirect()->back()->with($notification);
+    }
+
+    public function InstructorCourseSectionDelete(int $course_id, int $section_id): RedirectResponse
+    {
+        Course::query()->findOrFail($course_id);
+
+        $section = CourseSection::query()->find($section_id);
+
+        $section->course_lecture()->delete();
+        $section->delete();
+
+        $notification = [
+            "message" => "Successfully delete section",
+            "alert-type" => "success"
+        ];
+
+        return redirect()->back()->with($notification);
+    }
+
+    public function InstructorCourseLectureStore(int $course_id, int $section_id, Request $request): JsonResponse
+    {
+        $request->validate([
+            "lecture_title" => ["required", "string", "max:255"],
+            "lecture_url" => ["required", "string", "max:255"],
+            "lecture_content" => ["required", "string", "max:255"],
+
+        ]);
+
+        $course_lecture = new CourseLecture();
+        $course_lecture->course_id = $course_id;
+        $course_lecture->section_id = $section_id;
+        $course_lecture->lecture_title = $request->input("lecture_title");
+        $course_lecture->url = $request->input('lecture_url');
+        $course_lecture->content = $request->input('lecture_content');
+        $course_lecture->save();
+
+        return response()->json([
+            "success" => "Lecture Successfully Added"
+        ]);
+    }
+
+    public function InstructorCourseLectureEdit(int $course_id, int $section_id, int $lecture_id): View
+    {
+        Course::query()->findOrFail($course_id);
+
+        CourseSection::query()->findOrFail($section_id);
+
+        $lecture = CourseLecture::query()->find($lecture_id);
+
+        return view('instructor.course.section.lecture_edit', compact('lecture'));
+    }
+
+    public function InstructorCourseLectureUpdate(
+        int     $course_id,
+        int     $section_id,
+        int     $lecture_id,
+        Request $request
+    ): RedirectResponse
+    {
+        $request->validate([
+            "lecture_title" => ["required", "string", "max:255"],
+            "url" => ["required", "string", "max:255"],
+            "content" => ["required", "string", "max:255"],
+        ]);
+        Course::query()->findOrFail($course_id);
+        CourseSection::query()->findOrFail($section_id);
+        CourseLecture::query()->find($lecture_id)->update([
+            "lecture_title" => $request->input("lecture_title"),
+            "url" => $request->input('url'),
+            "content" => $request->input('content'),
+        ]);
+
+        $notification = [
+            "message" => "Successfully update lecture",
+            "alert-type" => "success"
+        ];
+
+        return redirect()->back()->with($notification);
+    }
+
+    public function InstructorCourseLectureDelete(
+        int $course_id,
+        int $section_id,
+        int $lecture_id,
+    ): RedirectResponse
+    {
+        Course::query()->findOrFail($course_id);
+        CourseSection::query()->findOrFail($section_id);
+        CourseLecture::query()->find($lecture_id)->delete();
+
+        $notification = [
+            "message" => "Successfully delete lecture",
+            "alert-type" => "success"
+        ];
+
+        return redirect()->back()->with($notification);
     }
 }

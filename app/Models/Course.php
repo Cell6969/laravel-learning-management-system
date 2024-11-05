@@ -64,6 +64,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Course whereSubcategoryId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Course whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Course whereVideo($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\CourseSection> $course_section
+ * @property-read int|null $course_section_count
  * @mixin \Eloquent
  */
 class Course extends Model
@@ -96,5 +98,10 @@ class Course extends Model
     public function course_goal(): HasMany
     {
         return $this->hasMany(CourseGoal::class, 'course_id', 'id');
+    }
+
+    public function course_section(): HasMany
+    {
+        return $this->hasMany(CourseSection::class, 'course_id', 'id');
     }
 }

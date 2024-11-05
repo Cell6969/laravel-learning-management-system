@@ -23,3 +23,13 @@ select * from courses;
 select * from course_goals;
 
 delete from courses;
+
+
+desc course_sections;
+
+desc course_lectures;
+
+select * from course_sections;
+
+select * from course_lectures;
+delete from course_lectures;

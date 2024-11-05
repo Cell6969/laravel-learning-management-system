@@ -55,10 +55,14 @@
                                 </td>
                                 <td>
                                     <a href="{{route('instructor.course.edit', ["id" => $item->id])}}"
-                                       class="btn btn-primary px-3 btn-sm"><i
-                                            class="bx bx-edit"></i>Edit</a>
+                                       class="btn btn-primary px-3"><i
+                                            class="bx bx-edit" title="edit"></i></a>
                                     <a href="{{route('instructor.course.delete', ["id" => $item->id])}}"
-                                       class="btn btn-danger px-3 btn-sm" id="delete"><i class="bx bx-eraser"></i>Delete</a>
+                                       class="btn btn-danger px-3" id="delete"><i
+                                            class="bx bx-eraser" title="delete"></i></a>
+                                    <a href="{{route('instructor.course.section.add', ["id" => $item->id])}}"
+                                       class="btn btn-warning" title="lecture"><i
+                                            class="lni lni-list"></i></a>
                                 </td>
                             </tr>
                         @endforeach
