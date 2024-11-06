@@ -67,7 +67,7 @@
                     <div class="form-group col-md-6">
                         <label for="input1" class="form-label">Certificate Available</label>
                         <select class="form-select mb-3" aria-label="Default select example" name="certificate">
-                            <option selected="" disabled>Select Subcategory</option>
+                            <option selected="" disabled>Choose certificate</option>
                             <option value="yes">Yes</option>
                             <option value="no">No</option>
                         </select>
